@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../utils/firebase"; // adjust path accordingly
+import { db } from "../utils/firebase";
 
-function AddItemForm() {
+function AddItem() {
   const [item, setItem] = useState({
     name: '',
     description: '',
@@ -12,23 +12,21 @@ function AddItemForm() {
     rating: '',
   });
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // add a new document in the "items" collection
       const docRef = await addDoc(collection(db, "menu-item"), {
         name: item.name,
         description: item.description,
         imageUrl: item.imageUrl,
         price: parseFloat(item.price),
+        rating: parseFloat(item.rating),
         createdAt: new Date()
       });
       console.log("Document written with ID: ", docRef.id);
       alert("Item added successfully!");
-      // Optionally clear form:
-      setItem({ name: '', description: '', imageUrl: '', price: '' });
+      setItem({ name: '', description: '', imageUrl: '', price: '', rating: '' });
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Failed to add item.");
@@ -36,7 +34,7 @@ function AddItemForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] px-4 py-12">
+    <div className="pt-24 pb-32 px-4 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] min-h-[calc(100vh-160px)] flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-2xl p-10 bg-white/10 border border-white/30 backdrop-blur-xl shadow-[0_0_40px_rgba(255,255,255,0.1)] rounded-3xl text-white"
@@ -128,4 +126,4 @@ function AddItemForm() {
   );
 }
 
-export default AddItemForm;
+export default AddItem;

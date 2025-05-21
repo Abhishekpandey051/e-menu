@@ -3,30 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../utils/firebase";
 
 function MenuItemCard() {
-  const [items,setItems] = useState([]);
-  // const items = [
-  //   {
-  //     name: "Tandoori Paneer Pizza",
-  //     description: "A fiery blend of paneer, tandoori spices, and cheese with a smoky crust baked to perfection.",
-  //     imageUrl: "https://source.unsplash.com/600x400/?pizza",
-  //     price: "299",
-  //     rating: 4.7
-  //   },
-  //   {
-  //     name: "Chocolate Lava Cake",
-  //     description: "Rich molten chocolate cake with a gooey center and a hint of vanilla.",
-  //     imageUrl: "https://source.unsplash.com/600x400/?chocolate-dessert",
-  //     price: "149",
-  //     rating: 4.9
-  //   },
-  //   {
-  //     name: "Butter Chicken",
-  //     description: "Creamy, spiced curry with tender chicken served with buttery naan.",
-  //     imageUrl: "https://source.unsplash.com/600x400/?butter-chicken",
-  //     price: "349",
-  //     rating: 4.8
-  //   },
-  // ];
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -36,7 +13,6 @@ function MenuItemCard() {
         querySnapshot.forEach((doc) => {
           fetchedItems.push({ id: doc.id, ...doc.data() });
         });
-        console.log(fetchedItems);
         setItems(fetchedItems);
       } catch (error) {
         console.error("Error fetching items: ", error);
@@ -47,12 +23,13 @@ function MenuItemCard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] p-6 md:p-12">
+    <div className="pt-24 pb-40 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] px-6 md:px-12 min-h-[140vh]">
+
       <h1 className="text-4xl font-bold text-white text-center mb-10">🍽️ Our Special Menu</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <div
-            key={index}
+            key={item.id}
             className="bg-white/10 border border-white/20 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-2xl duration-300 text-white"
           >
             {/* Image */}
@@ -62,9 +39,11 @@ function MenuItemCard() {
                 alt={item.name}
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute top-3 right-3 bg-yellow-400 text-black font-semibold text-xs px-3 py-1 rounded-full shadow-md">
-                ⭐ {item.rating}
-              </div>
+              {item.rating && (
+                <div className="absolute top-3 right-3 bg-yellow-400 text-black font-semibold text-xs px-3 py-1 rounded-full shadow-md">
+                  ⭐ {item.rating}
+                </div>
+              )}
             </div>
 
             {/* Content */}

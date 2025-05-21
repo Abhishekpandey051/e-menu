@@ -3,16 +3,16 @@ import Login from './admin/Login'
 import { AuthProvider } from './utils/AuthProvider'
 import AddItem from './admin/AddItem'
 import MenuItemCard from './page/MenuItemCard'
+import { Outlet } from 'react-router'
+import Navbar from './page/Navbar'
+import Footer from './page/Footer'
 
 function App() {
   return (
     <div>
-      {/* <AuthProvider>
-      <Login />
-      </AuthProvider> */}
-      
-       {/* <AddItem/> */}
-       <MenuItemCard/>
+       <Navbar/>
+       <Outlet/>
+       <Footer/>
     </div>
   )
 }

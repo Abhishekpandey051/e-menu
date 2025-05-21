@@ -2,152 +2,158 @@ import { useState } from 'react';
 import bgFood from '../assets/bg-food.jpeg';
 import useValidate from '../utils/useValidate';
 import { useAuth } from '../utils/AuthProvider';
+import { useNavigate } from 'react-router';
 
 function Login() {
-    const [isSignin, setIsSignin] = useState(true);
-    const [value, setValue] = useState({
-        name: '',
-        email: '',
-        password: '',
-        remember: false,
-    });
-    const [submitClicked, setSubmitClicked] = useState(false);
-    const { signUp, signIn,logout, userData, currentUser } = useAuth();
-console.log(userData,currentUser);
+  const [isSignin, setIsSignin] = useState(true);
+  const [value, setValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+    remember: false,
+  });
+  const [submitClicked, setSubmitClicked] = useState(false);
 
-    const error = useValidate(value, isSignin, submitClicked);
+  const { signUp, signIn } = useAuth();
+  
+  const navigate = useNavigate();
 
-    const handleSubmitFormvalue = async (e) => {
-        e.preventDefault();
-        setSubmitClicked(true);
+  const error = useValidate(value, isSignin, submitClicked);
 
-        const hasErrors = Object.keys(error).length > 0;
+  const handleSubmitFormvalue = async (e) => {
+    e.preventDefault();
+    setSubmitClicked(true);
 
-        if (hasErrors) {
-            console.warn('Validation failed:', error);
-            return;
-        }
+    const hasErrors = Object.keys(error).length > 0;
+    if (hasErrors) {
+      console.warn('Validation failed:', error);
+      return;
+    }
 
-        try {
-            if (isSignin) {
-                await signIn(value.email, value.password);
-                alert("Logged in");
-            } else {
-                await signUp(value.email, value.password, value.name);
-                alert("Account created");
-            }
-        } catch (err) {
-            alert(err.message);
-        }
-    };
+    try {
+      if (isSignin) {
+        await signIn(value.email, value.password);
+        alert("Logged in successfully");
+        navigate('/add-item');
+      } else {
+        await signUp(value.email, value.password, value.name);
+        alert("Account created successfully");
+        setIsSignin(true);
+        setSubmitClicked(false);
+      }
+    } catch (err) {
+      alert(err.message || "Authentication failed");
+    }
+  };
 
-    return (
-        <div className="relative min-h-screen">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    className="w-full h-full object-cover"
-                    src={bgFood}
-                    alt="sign-up"
-                />
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background Image with overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={bgFood}
+          alt="background"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/80" />
+      </div>
+
+      {/* Auth Form */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-10">
+        <form
+          onSubmit={handleSubmitFormvalue}
+          className="w-full max-w-sm md:max-w-md bg-white/5 text-white p-8 md:p-10 rounded-xl border border-white/10 shadow-xl backdrop-blur-md"
+        >
+          <h1 className="text-3xl font-bold mb-6 text-center text-red-400">
+            {isSignin ? "Sign In" : "Sign Up"}
+          </h1>
+
+          {/* Name (only for sign up) */}
+          {!isSignin && (
+            <div className="mb-4">
+              <label className="block mb-1 text-sm text-gray-200">Full Name</label>
+              <input
+                type="text"
+                value={value.name}
+                onChange={(e) => setValue({ ...value, name: e.target.value })}
+                placeholder="John Doe"
+                className="w-full p-2.5 rounded-md text-black text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
+              />
+              {submitClicked && error.name && (
+                <p className="text-red-400 mt-1 text-sm">{error.name}</p>
+              )}
             </div>
+          )}
 
-            {/* Form */}
-            <form
-                onSubmit={handleSubmitFormvalue}
-                className="absolute z-10 w-11/12 max-w-sm md:w-1/2 lg:w-1/3 xl:w-1/4 text-white p-8 md:p-12 bg-black bg-opacity-80 rounded-lg shadow-md top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            >
-                <h1 className="font-bold text-3xl pb-5 text-center">
-                    {isSignin ? "Sign In" : "Sign Up"}
-                </h1>
+          {/* Email */}
+          <div className="mb-4">
+            <label className="block mb-1 text-sm text-gray-200">Email</label>
+            <input
+              type="email"
+              value={value.email}
+              onChange={(e) => setValue({ ...value, email: e.target.value })}
+              placeholder="name@example.com"
+              className="w-full p-2.5 rounded-md text-black text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
+            />
+            {submitClicked && error.email && (
+              <p className="text-red-400 mt-1 text-sm">{error.email}</p>
+            )}
+          </div>
 
-                {!isSignin && (
-                    <div className="mb-5">
-                        <label className="block mb-2 text-sm font-medium text-white">Your name</label>
-                        <input
-                            type="text"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
-                            placeholder="Full Name"
-                            value={value.name}
-                            onChange={(e) => setValue({ ...value, name: e.target.value })}
-                        />
-                        {submitClicked && error.name && (
-                            <span className='text-red-500 font-medium'>{error.name}</span>
-                        )}
-                    </div>
-                )}
+          {/* Password */}
+          <div className="mb-4">
+            <label className="block mb-1 text-sm text-gray-200">Password</label>
+            <input
+              type="password"
+              value={value.password}
+              onChange={(e) => setValue({ ...value, password: e.target.value })}
+              placeholder="••••••••"
+              className="w-full p-2.5 rounded-md text-black text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-400"
+            />
+            {submitClicked && error.password && (
+              <p className="text-red-400 mt-1 text-sm">{error.password}</p>
+            )}
+          </div>
 
-                <div className="mb-5">
-                    <label className="block mb-2 text-sm font-medium text-white">Your email</label>
-                    <input
-                        type="email"
-                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
-                        placeholder="name@example.com"
-                        value={value.email}
-                        onChange={(e) => setValue({ ...value, email: e.target.value })}
-                    />
-                    {submitClicked && error.email && (
-                        <span className='text-red-500 font-medium'>{error.email}</span>
-                    )}
-                </div>
+          {/* Remember me */}
+          <div className="flex items-center mb-5">
+            <input
+              id="remember"
+              type="checkbox"
+              checked={value.remember}
+              onChange={(e) => setValue({ ...value, remember: e.target.checked })}
+              className="w-4 h-4 text-red-500 bg-white border-gray-300 rounded focus:ring-red-400"
+            />
+            <label htmlFor="remember" className="ml-2 text-sm text-gray-300">
+              Remember me
+            </label>
+          </div>
 
-                <div className="mb-5">
-                    <label className="block mb-2 text-sm font-medium text-white">Your password</label>
-                    <input
-                        type="password"
-                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5"
-                        placeholder="••••••••"
-                        value={value.password}
-                        onChange={(e) => setValue({ ...value, password: e.target.value })}
-                    />
-                    {submitClicked && error.password && (
-                        <span className='text-red-500 font-medium'>{error.password}</span>
-                    )}
-                </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-md bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold transition-all hover:scale-105 shadow-md"
+          >
+            {isSignin ? "Sign In" : "Sign Up"}
+          </button>
 
-                <div className="flex items-center mb-5">
-                    <input
-                        id="remember"
-                        type="checkbox"
-                        checked={value.remember}
-                        onChange={(e) => setValue({ ...value, remember: e.target.checked })}
-                        className="w-4 h-4 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-red-500"
-                    />
-                    <label htmlFor="remember" className="ms-2 text-sm font-medium text-white">
-                        Remember me
-                    </label>
-                </div>
-
-                <button
-                    type="submit"
-                    className="p-3 my-4 bg-red-700 hover:bg-red-800 w-full rounded-lg font-semibold transition"
-                >
-                    {isSignin ? "Sign In" : "Sign Up"}
-                </button>
-
-                <p
-                    className="text-sm text-center cursor-pointer underline"
-                    onClick={() => {
-                        setIsSignin(!isSignin);
-                        setSubmitClicked(false); // reset validation state
-                        setValue({
-                            name: '',
-                            email: '',
-                            password: '',
-                            remember: false,
-                        });
-                    }}
-                >
-                    {isSignin
-                        ? "New to E-Menu? Sign Up Now"
-                        : "Already Registered? Sign In Now"}
-                </p>
-            </form>
-            <div className='bg-red-500' style={{ height: '50px', width: '100%', position: 'absolute', bottom: 0 }}>
-            <button onClick={logout}>Logout</button>
-            </div>
-        </div>
-    );
+          {/* Toggle between login/signup */}
+          <p
+            onClick={() => {
+              setIsSignin(!isSignin);
+              setSubmitClicked(false);
+              setValue({ name: '', email: '', password: '', remember: false });
+            }}
+            className="mt-6 text-sm text-center cursor-pointer text-red-300 hover:text-red-400 hover:underline"
+          >
+            {isSignin
+              ? "New to E-Menu? Create an account"
+              : "Already have an account? Sign In"}
+          </p>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default Login;
