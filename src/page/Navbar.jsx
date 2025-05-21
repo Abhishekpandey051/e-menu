@@ -81,9 +81,9 @@ function Navbar() {
                             {item}
                         </a>
                     ))}
-                    <Link to='/admin' className="w-full px-4 py-2 bg-pink-500 hover:bg-pink-600 transition rounded-full font-semibold text-white">
+                    {/* <Link to='/admin' className="w-full px-4 py-2 bg-pink-500 hover:bg-pink-600 transition rounded-full font-semibold text-white">
                         Admin
-                    </Link>
+                    </Link> */}
                       <div className="hidden md:flex">
                         {userData && option ? (
                             <button
