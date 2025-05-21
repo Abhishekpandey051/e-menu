@@ -84,6 +84,28 @@ function Navbar() {
                     <Link to='/admin' className="w-full px-4 py-2 bg-pink-500 hover:bg-pink-600 transition rounded-full font-semibold text-white">
                         Admin
                     </Link>
+                      <div className="hidden md:flex">
+                        {userData && option ? (
+                            <button
+                                onClick={() => {
+                                    logout();
+                                    setOption(false);
+                                    navigate('/admin');
+                                }}
+                                className="w-full px-4 py-2 bg-pink-500 hover:bg-pink-600 transition rounded-full font-semibold text-white"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                to="/admin"
+                                onClick={() => setOption(true)}
+                                className="w-full px-4 py-2 bg-pink-500 hover:bg-pink-600 transition rounded-full font-semibold text-white"
+                            >
+                                Admins
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
