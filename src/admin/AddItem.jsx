@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
+import swal from 'sweetalert';
+import { ClipLoader } from 'react-spinners';
 
 function AddItem() {
   const [item, setItem] = useState({
@@ -11,27 +13,45 @@ function AddItem() {
     price: '',
     rating: '',
   });
-
+const [loading, setLoading] = useState(false)
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setLoading(true)
 
-    try {
-      const docRef = await addDoc(collection(db, "menu-item"), {
-        name: item.name,
-        description: item.description,
-        imageUrl: item.imageUrl,
-        price: parseFloat(item.price),
-        rating: parseFloat(item.rating),
-        createdAt: new Date()
-      });
-      console.log("Document written with ID: ", docRef.id);
-      alert("Item added successfully!");
-      setItem({ name: '', description: '', imageUrl: '', price: '', rating: '' });
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      alert("Failed to add item.");
-    }
-  };
+  try {
+    
+    await addDoc(collection(db, "menu-item"), {
+      name: item.name,
+      description: item.description,
+      imageUrl: item.imageUrl,
+      price: parseFloat(item.price),
+      rating: parseFloat(item.rating),
+      createdAt: new Date()
+    });
+    // console.log("Document written with ID: ", docRef.id);
+
+    swal({
+      title: "Success!",
+      text: "Item added successfully!",
+      icon: "success",
+      timer: 2000,
+      buttons: false
+    });
+handleSubmit
+    setItem({
+      name: '',
+      description: '',
+      imageUrl: '',
+      price: '',
+      rating: ''
+    });
+    setLoading(false)
+  } catch (e) {
+    console.error("Error adding document: ", e);
+    swal("Error", "Failed to add item. Try again.", "error");
+  }
+};
+
 
   return (
     <div className="pt-24 pb-32 px-4 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] min-h-[calc(100vh-160px)] flex items-center justify-center">
@@ -119,7 +139,7 @@ function AddItem() {
           type="submit"
           className="w-full py-3 bg-pink-500 hover:bg-pink-600 transition-all duration-300 text-white font-semibold text-lg rounded-xl shadow-lg hover:scale-105"
         >
-          Add Item
+          {loading ? <ClipLoader loading={loading} size={25} color="white" /> : 'Add Item'}
         </button>
       </form>
     </div>

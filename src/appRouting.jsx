@@ -7,20 +7,20 @@ import MenuItemCard from "./page/MenuItemCard";
 export const appRouter = createBrowserRouter([
   {
     path: "/",
-    element:<App/>,
-    children:[
+    element: <App />,
+    children: [
       {
-        path:'/',
-        element:<MenuItemCard/>
+        path: '/',
+        element: <MenuItemCard />
       },
       {
-        path:"/admin",
-        element:<Admin/>,
+        path: "/admin",
+        element: <Admin />,
       },
       {
-        path:'/add-item',
-        element:<AddItem/>
-      }
+        path: '/add-item',
+        element: <AddItem />
+      },
 
     ],
     // errorElement:<Error/>

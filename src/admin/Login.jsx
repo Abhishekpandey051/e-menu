@@ -3,6 +3,8 @@ import bgFood from '../assets/bg-food.jpeg';
 import useValidate from '../utils/useValidate';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router';
+import swal from 'sweetalert';
+import { ClipLoader } from 'react-spinners';
 
 function Login() {
   const [isSignin, setIsSignin] = useState(true);
@@ -13,9 +15,9 @@ function Login() {
     remember: false,
   });
   const [submitClicked, setSubmitClicked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { signUp, signIn } = useAuth();
-  
   const navigate = useNavigate();
 
   const error = useValidate(value, isSignin, submitClicked);
@@ -23,32 +25,52 @@ function Login() {
   const handleSubmitFormvalue = async (e) => {
     e.preventDefault();
     setSubmitClicked(true);
+    setLoading(true);
 
     const hasErrors = Object.keys(error).length > 0;
     if (hasErrors) {
       console.warn('Validation failed:', error);
+      setLoading(false);
       return;
     }
 
     try {
       if (isSignin) {
         await signIn(value.email, value.password);
-        alert("Logged in successfully");
+        swal({
+          title: "Success!",
+          text: "You have successfully logged in.",
+          icon: "success",
+          buttons: false,
+          timer: 2000,
+        });
         navigate('/add-item');
       } else {
         await signUp(value.email, value.password, value.name);
-        alert("Account created successfully");
+        swal({
+          title: "Account Created",
+          text: "Your account has been created successfully.",
+          icon: "success",
+          button: "OK"
+        });
         setIsSignin(true);
         setSubmitClicked(false);
       }
     } catch (err) {
-      alert(err.message || "Authentication failed");
+      swal({
+        title: "Oops!",
+        text: err.message || "Authentication failed. Please try again.",
+        icon: "error",
+        button: "OK"
+      });
     }
+    setLoading(false);
   };
+
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background Image with overlay */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src={bgFood}
@@ -58,7 +80,7 @@ function Login() {
         <div className="absolute inset-0 bg-black/80" />
       </div>
 
-      {/* Auth Form */}
+      {/* Form */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-10">
         <form
           onSubmit={handleSubmitFormvalue}
@@ -68,7 +90,6 @@ function Login() {
             {isSignin ? "Sign In" : "Sign Up"}
           </h1>
 
-          {/* Name (only for sign up) */}
           {!isSignin && (
             <div className="mb-4">
               <label className="block mb-1 text-sm text-gray-200">Full Name</label>
@@ -85,7 +106,6 @@ function Login() {
             </div>
           )}
 
-          {/* Email */}
           <div className="mb-4">
             <label className="block mb-1 text-sm text-gray-200">Email</label>
             <input
@@ -100,7 +120,6 @@ function Login() {
             )}
           </div>
 
-          {/* Password */}
           <div className="mb-4">
             <label className="block mb-1 text-sm text-gray-200">Password</label>
             <input
@@ -115,7 +134,6 @@ function Login() {
             )}
           </div>
 
-          {/* Remember me */}
           <div className="flex items-center mb-5">
             <input
               id="remember"
@@ -129,15 +147,13 @@ function Login() {
             </label>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 rounded-md bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold transition-all hover:scale-105 shadow-md"
           >
-            {isSignin ? "Sign In" : "Sign Up"}
+            {loading ? <ClipLoader loading={loading} size={25} color="white" /> : isSignin ? "Sign In" : "Sign Up"}
           </button>
 
-          {/* Toggle between login/signup */}
           <p
             onClick={() => {
               setIsSignin(!isSignin);
