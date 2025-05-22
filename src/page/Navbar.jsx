@@ -1,17 +1,35 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { useAuth } from "../utils/AuthProvider";
+import { useAuth } from "../utils/useAuth";
+import swal from "sweetalert";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { userData, logout } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      swal({
+        title: "Success!",
+        text: "You have successfully logged out.",
+        icon: "success",
+        buttons: false,
+        timer: 2000,
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      swal("Oops!", "Something went wrong during logout.", "error");
+    }
+  };
+
   return (
     <nav className="bg-gradient-to-r from-[#141e30] to-[#243b55] shadow-xl fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
           <Link to="/" className="text-3xl font-extrabold tracking-wider text-white drop-shadow">
             🍽️ <span className="text-pink-400">E</span>Menu
           </Link>
@@ -29,7 +47,7 @@ function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Login/Admin Buttons */}
+          {/* Desktop Buttons */}
           <div className="hidden md:flex items-center">
             {!userData ? (
               <Link
@@ -47,10 +65,7 @@ function Navbar() {
                   Go to Dashboard
                 </Link>
                 <button
-                  onClick={() => {
-                    logout();
-                    navigate('/');
-                  }}
+                  onClick={handleLogout}
                   className="ml-4 px-6 py-2 bg-red-600 hover:bg-red-700 transition text-white rounded-full shadow-lg font-semibold"
                 >
                   Logout
@@ -59,7 +74,7 @@ function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="text-white">
               {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -68,7 +83,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Dropdown */}
       <div
         className={`md:hidden bg-[#141e30] text-white transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
@@ -86,7 +101,6 @@ function Navbar() {
             </a>
           ))}
 
-          {/* Mobile Login/Admin Buttons */}
           {!userData ? (
             <Link
               to="/admin"
@@ -106,9 +120,8 @@ function Navbar() {
               </Link>
               <button
                 onClick={() => {
-                  logout();
+                  handleLogout();
                   setIsOpen(false);
-                  navigate('/');
                 }}
                 className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 transition rounded-full font-semibold text-white"
               >

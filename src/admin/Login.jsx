@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import bgFood from '../assets/bg-food.jpeg';
 import useValidate from '../utils/useValidate';
-import { useAuth } from '../utils/AuthProvider';
+import { useAuth } from '../utils/useAuth';
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert';
 import { ClipLoader } from 'react-spinners';

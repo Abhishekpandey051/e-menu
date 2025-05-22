@@ -28,7 +28,6 @@ const [loading, setLoading] = useState(false)
       rating: parseFloat(item.rating),
       createdAt: new Date()
     });
-    // console.log("Document written with ID: ", docRef.id);
 
     swal({
       title: "Success!",

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -7,8 +7,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db } from "./firebase"; 
-const AuthContext = createContext();
+import { auth, db } from "./firebase";
+import { AuthContext } from "./AuthContext"; 
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -39,12 +39,10 @@ export const AuthProvider = ({ children }) => {
   const signUp = async (email, password, name) => {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     const avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${name}`;
-
     await updateProfile(userCred.user, {
       displayName: name,
       photoURL: avatar,
     });
-
     await setDoc(doc(db, "users", userCred.user.uid), {
       uid: userCred.user.uid,
       email,
@@ -57,11 +55,9 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     const user = userCred.user;
-
     const docRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(docRef);
 
-    // If the user document doesn't exist, create it
     if (!userSnap.exists()) {
       const avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${user.displayName || user.email}`;
       await setDoc(docRef, {
@@ -84,5 +80,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
