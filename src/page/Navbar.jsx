@@ -8,6 +8,13 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { userData, logout } = useAuth();
   const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (!userData) {
+  //     navigate("/");
+  //   } else {
+  //     navigate("/add-item");
+  //   }
+  // }, [userData])
 
   const handleLogout = async () => {
     try {
@@ -25,7 +32,6 @@ function Navbar() {
       swal("Oops!", "Something went wrong during logout.", "error");
     }
   };
-
   return (
     <nav className="bg-gradient-to-r from-[#141e30] to-[#243b55] shadow-xl fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-4">
@@ -37,13 +43,13 @@ function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex flex-1 justify-center items-center space-x-10">
             {["Home", "Menu", "About", "Contact"].map((item) => (
-              <a
+              <Link
                 key={item}
-                href="#"
+                to={item === 'About' && '/about'}
                 className="text-white text-lg font-medium hover:text-pink-400 transition duration-300"
               >
                 {item}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -85,9 +91,8 @@ function Navbar() {
 
       {/* Mobile Dropdown */}
       <div
-        className={`md:hidden bg-[#141e30] text-white transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
-        }`}
+        className={`md:hidden bg-[#141e30] text-white transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+          }`}
       >
         <div className="flex flex-col items-center px-6 py-4 space-y-4">
           {["Home", "Menu", "About", "Contact"].map((item) => (
