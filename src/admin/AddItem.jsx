@@ -10,7 +10,8 @@ function AddItem() {
     name: '',
     description: '',
     imageUrl: '',
-    price: '',
+    h_price: '',
+    price:'',
     rating: '',
   });
 const [loading, setLoading] = useState(false)
@@ -20,14 +21,21 @@ const [loading, setLoading] = useState(false)
 
   try {
     
-    await addDoc(collection(db, "menu-item"), {
-      name: item.name,
-      description: item.description,
-      imageUrl: item.imageUrl,
+    const itemData = {
+      ...item,
       price: parseFloat(item.price),
       rating: parseFloat(item.rating),
       createdAt: new Date()
-    });
+    };
+
+    if (item.h_price !== '') {
+      itemData.h_price = parseFloat(item.h_price);
+    }
+
+    
+  console.log(itemData);
+  
+    await addDoc(collection(db, "menu-item"), itemData);
 
     swal({
       title: "Success!",
@@ -36,7 +44,7 @@ const [loading, setLoading] = useState(false)
       timer: 2000,
       buttons: false
     });
-handleSubmit
+
     setItem({
       name: '',
       description: '',
@@ -102,24 +110,40 @@ handleSubmit
           />
         </div>
 
-        {/* Price & Rating */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Price</label>
-            <input
+        {/*Price */}
+        <div className="mb-6">
+         <label className="block text-sm font-medium mb-2">Price</label>
+             <input
               type="number"
               step="0.01"
-              required
               placeholder="e.g. 299.00"
               value={item.price}
               onChange={(e) => setItem({ ...item, price: e.target.value })}
               className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-inner"
             />
+        </div>
+
+       
+
+        {/* Price and rating */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Half Price</label>
+             <input
+              type="number"
+              step="0.01"
+              placeholder="e.g. 299.00"
+              value={item.h_price}
+              onChange={(e) => setItem({ ...item, h_price: e.target.value })}
+              className="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-pink-400 shadow-inner"
+            />
+           
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Rating</label>
-            <input
+           <label className="block text-sm font-medium mb-2">Rating</label>
+          <input
               type="number"
               min="1"
               max="5"

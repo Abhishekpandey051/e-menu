@@ -4,9 +4,7 @@ import Login from './Login'
 
 function Admin() {
   return (
-   
         <Login/>
-   
   )
 }
 

@@ -3,7 +3,7 @@ import { collection, getDocs, updateDoc, deleteDoc, doc } from "firebase/firesto
 import { db } from "../utils/firebase";
 import swal from "sweetalert";
 
-function Dashboard() {
+function MenuList() {
   const [items, setItems] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editData, setEditData] = useState({ name: "", price: "", description: "" });
@@ -153,5 +153,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
-useEffect
+export default MenuList;

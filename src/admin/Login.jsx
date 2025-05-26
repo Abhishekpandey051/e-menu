@@ -44,7 +44,7 @@ function Login() {
           buttons: false,
           timer: 2000,
         });
-        navigate('/add-item');
+        navigate('/dashboard');
       } else {
         await signUp(value.email, value.password, value.name);
         swal({

@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import Admin from "./admin/Admin";
-import AddItem from "./admin/AddItem";
 import MenuItemCard from "./page/MenuItemCard";
 import About from "./page/About";
-import Dashboard from "./admin/Dashboard";
+import ContactUs from "./page/ContactUs";
+import Feedback from "./page/Feedback";
+import DashboardLayout from "./dashborad/DashboardLayout";
 
 export const appRouter = createBrowserRouter([
   {
@@ -20,17 +21,21 @@ export const appRouter = createBrowserRouter([
         element: <Admin />,
       },
       {
-        path: '/add-item',
-        element: <AddItem />
-      },
-      {
         path:'/about',
         element:<About/>
       },
       {
-        path:'/ap',
-        element:<Dashboard/>
+        path:'/contact',
+        element:<ContactUs/>
       },
+      {
+        path: 'feedback',
+        element: <Feedback/>
+      },
+      {
+        path:'/dashboard',
+        element:<DashboardLayout/>
+      }
 
     ],
     // errorElement:<Error/>
