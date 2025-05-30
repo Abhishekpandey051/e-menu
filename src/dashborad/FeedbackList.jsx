@@ -39,23 +39,37 @@ function FeedbackList() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {feedbacks.map((fb) => (
-            <div key={fb.id} className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 shadow-xl hover:scale-[1.01] transition-transform duration-300">
-              <div className="mb-3">
-                <h3 className="text-xl font-bold text-pink-300">{fb.name}</h3>
-                <p className="text-sm text-white/70">{fb.email}</p>
+            <div
+              key={fb.id}
+              className="bg-white/10 backdrop-blur-lg border border-white/30 rounded-3xl p-6 shadow-xl hover:shadow-2xl hover:scale-[1.01] transition-transform duration-300 text-left"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="bg-pink-400 text-black rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shadow-lg">
+                  {fb.name?.[0]?.toUpperCase() || "?"}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">{fb.name}</h3>
+                  <p className="text-white/70 text-sm">{fb.email}</p>
+                </div>
               </div>
 
-              <div className="mb-2">
-                <p className="text-white"><strong>Dish:</strong> {fb.dish}</p>
-                <p className="text-white"><strong>Rating:</strong> {"⭐".repeat(fb.rating)}</p>
+              <div className="mb-4">
+                <p className="text-white/80"><span className="font-semibold text-white">Dish:</span> {fb.dish}</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="font-semibold text-white">Rating:</span>
+                  <span className="text-yellow-400 text-lg">
+                    {"⭐".repeat(fb.rating)}{fb.rating < 5 ? "☆".repeat(5 - fb.rating) : ""}
+                  </span>
+                </div>
               </div>
 
-              <p className="text-white/90 text-sm mt-3 border-t border-white/20 pt-3">
+              <p className="text-white/90 text-sm mt-4 border-t border-white/20 pt-4 leading-relaxed">
                 {fb.feedback}
               </p>
             </div>
           ))}
         </div>
+
       )}
     </div>
   );
