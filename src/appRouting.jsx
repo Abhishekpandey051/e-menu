@@ -17,10 +17,6 @@ export const appRouter = createBrowserRouter([
         element: <MenuItemCard />
       },
       {
-        path: "/admin",
-        element: <Admin />,
-      },
-      {
         path:'/about',
         element:<About/>
       },
@@ -32,12 +28,16 @@ export const appRouter = createBrowserRouter([
         path: 'feedback',
         element: <Feedback/>
       },
-      {
-        path:'/dashboard',
-        element:<DashboardLayout/>
-      }
 
     ],
     // errorElement:<Error/>
   },
+      {
+        path: "/admin",
+        element: <Admin />,
+      },
+      {
+        path:'/dashboard',
+        element:<DashboardLayout/>
+      }
 ]);

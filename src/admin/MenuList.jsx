@@ -71,7 +71,7 @@ function MenuList() {
 
   return (
     <div className="pt-28 px-6 md:px-20 pb-20 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] text-white min-h-screen">
-      <h1 className="text-4xl font-bold mb-10 text-center text-pink-400">📋 Dashboard</h1>
+      {/* <h1 className="text-4xl font-bold mb-10 text-center text-pink-400">📋 Dashboard</h1> */}
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white/10 border border-white/20 rounded-xl overflow-hidden shadow-lg">
