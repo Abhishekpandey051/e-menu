@@ -56,7 +56,7 @@ function MenuItemCard() {
   }, [search, items]);
 
   return (
-    <div className="pt-24 pb-40 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] px-6 md:px-12 min-h-[140vh]">
+    <div className="pt-24 pb-15 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] px-6 md:px-12 min-h-[140vh]">
       <h1 className="text-4xl font-bold text-white text-center mb-6">🍽️ Our Special Menu</h1>
 
       {/* Search Input */}

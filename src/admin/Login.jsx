@@ -21,14 +21,13 @@ function Login() {
   const navigate = useNavigate();
 
   const error = useValidate(value, isSignin, submitClicked);
-
   const handleSubmitFormvalue = async (e) => {
     e.preventDefault();
     setSubmitClicked(true);
     setLoading(true);
 
     const hasErrors = Object.keys(error).length > 0;
-    if (hasErrors) {
+    if (value.email === '' || hasErrors) {
       console.warn('Validation failed:', error);
       setLoading(false);
       return;

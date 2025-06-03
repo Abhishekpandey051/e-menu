@@ -38,7 +38,7 @@ function ContactUs() {
   };
 
   return (
-    <div className="pt-28 pb-32 px-6 md:px-16 xl:px-32 bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
+    <div className="pt-28 pb-20 px-6 md:px-16 xl:px-32 bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
       {/* Heading */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h1 className="text-5xl md:text-6xl font-extrabold mb-4">
@@ -56,7 +56,7 @@ function ContactUs() {
           {[
             {
               title: '📍 Address',
-              content: 'Apcomp Infotech Pvt Ltd\nNoida Sector 63, India',
+              content: 'Mirzapur\nU.P, India',
             },
             {
               title: '📞 Phone',

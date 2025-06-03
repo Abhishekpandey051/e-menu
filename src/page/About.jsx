@@ -15,7 +15,7 @@ function About() {
   ];
 
   return (
-    <div className="pt-28 pb-32 px-6 md:px-16 xl:px-32 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] text-white">
+    <div className="pt-28 pb-15 px-6 md:px-16 xl:px-32 bg-gradient-to-br from-[#1F1C2C] to-[#928DAB] text-white">
       {/* Hero Section */}
       <div className="text-center max-w-4xl mx-auto mb-20">
         <h1 className="text-4xl md:text-5xl xl:text-6xl font-extrabold mb-6">
@@ -40,7 +40,7 @@ function About() {
         </div>
 
         {/* Image */}
-        <div className="rounded-3xl overflow-hidden shadow-2xl max-w-md mx-auto lg:mx-0">
+        <div className="rounded-3xl overflow-hidden shadow-2xl max-w-md mx-full lg:mx-0">
           <img
             src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80"
             alt="About Us"
