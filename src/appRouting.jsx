@@ -6,6 +6,7 @@ import About from "./page/About";
 import ContactUs from "./page/ContactUs";
 import Feedback from "./page/Feedback";
 import DashboardLayout from "./dashborad/DashboardLayout";
+import Event from "./page/Event";
 
 export const appRouter = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const appRouter = createBrowserRouter([
         path: 'feedback',
         element: <Feedback/>
       },
+      {
+        path:'/event',
+        element:<Event/>
+      }
 
     ],
     // errorElement:<Error/>

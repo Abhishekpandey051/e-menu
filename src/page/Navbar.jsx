@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
   { name: "Feedback", path: "/feedback" },
+  {name:"Event", path:'/event'}
 ];
 
 function Navbar() {
