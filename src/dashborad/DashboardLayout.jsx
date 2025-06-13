@@ -4,6 +4,7 @@ import ContactList from "./ContactList";
 import FeedbackList from "./FeedbackList";
 import Event from "./Event";
 import MenuList from "../admin/MenuList";
+import { useAuth } from "../utils/useAuth";
 
 const SidebarMenu = [
   { id: 1, name: "Add Item" },
@@ -15,45 +16,50 @@ const SidebarMenu = [
 
 function DashboardLayout() {
   const [activeTab, setActiveTab] = useState(1);
+  // const {userData} = useAuth()
 
   const renderTab = () => {
     switch (activeTab) {
-      case 1:
-        return <AddItem />;
-      case 2:
-        return <MenuList />;
-      case 3:
-        return <ContactList />;
-      case 4:
-        return <FeedbackList />;
-        case 5:
-          return <Event/>
-      default:
-        return null;
+      case 1: return <AddItem />;
+      case 2: return <MenuList />;
+      case 3: return <ContactList />;
+      case 4: return <FeedbackList />;
+      case 5: return <Event />;
+      default: return null;
     }
   };
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-64 bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white p-6 hidden md:block">
-        <h2 className="text-3xl font-bold mb-10">🍽️ Dashboard</h2>
-        <ul className="space-y-4">
-          {SidebarMenu.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`cursor-pointer hover:text-pink-400 transition font-medium ${
-                activeTab === item.id ? "text-pink-500" : ""
-              }`}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
+      <div className="w-64 relative bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white p-6 hidden md:flex flex-col justify-between">
+        <div>
+          <h2 className="text-3xl font-bold mb-10">🍽️ Dashboard</h2>
+          <ul className="space-y-4">
+            {SidebarMenu.map((item) => (
+              <li
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`cursor-pointer hover:text-pink-400 transition font-medium ${
+                  activeTab === item.id ? "text-pink-500" : ""
+                }`}
+              >
+                {item.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Settings Button */}
+        <button
+          onClick={() => alert("Settings Clicked")} // You can replace this with your own logic
+          className="bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md"
+        >
+          ⚙️ Settings
+        </button>
       </div>
 
-      {/* Mobile Sidebar Toggle */}
+      {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 z-50 bg-[#2c5364] w-full text-white flex justify-between items-center px-6 py-4 shadow">
         <h2 className="text-xl font-bold">🍽️ Dashboard</h2>
         <select

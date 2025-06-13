@@ -153,7 +153,7 @@ function Login() {
             {loading ? <ClipLoader loading={loading} size={25} color="white" /> : isSignin ? "Sign In" : "Sign Up"}
           </button>
 
-          <p
+          {/* <p
             onClick={() => {
               setIsSignin(!isSignin);
               setSubmitClicked(false);
@@ -164,7 +164,7 @@ function Login() {
             {isSignin
               ? "New to E-Menu? Create an account"
               : "Already have an account? Sign In"}
-          </p>
+          </p> */}
         </form>
       </div>
     </div>
