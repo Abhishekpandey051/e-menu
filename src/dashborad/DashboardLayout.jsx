@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddItem from "../admin/AddItem";
 import ContactList from "./ContactList";
 import FeedbackList from "./FeedbackList";
-import Event from "./Event";
+import Event from "./EventList";
 import MenuList from "../admin/MenuList";
 import { useAuth } from "../utils/useAuth";
+import { useNavigate } from "react-router";
 
 const SidebarMenu = [
   { id: 1, name: "Add Item" },
@@ -16,7 +17,13 @@ const SidebarMenu = [
 
 function DashboardLayout() {
   const [activeTab, setActiveTab] = useState(1);
-  // const {userData} = useAuth()
+  const { userData } = useAuth()
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userData === null) {
+      navigate('/')
+    }
+  }, [userData])
 
   const renderTab = () => {
     switch (activeTab) {
@@ -40,9 +47,8 @@ function DashboardLayout() {
               <li
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`cursor-pointer hover:text-pink-400 transition font-medium ${
-                  activeTab === item.id ? "text-pink-500" : ""
-                }`}
+                className={`cursor-pointer hover:text-pink-400 transition font-medium ${activeTab === item.id ? "text-pink-500" : ""
+                  }`}
               >
                 {item.name}
               </li>
